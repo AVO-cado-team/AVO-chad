@@ -1,6 +1,6 @@
 package com.example.avochadbackend.models;
-import com.example.avochadbackend.utility.exception.enums.Role;
-import com.example.avochadbackend.utility.exception.enums.Status;
+import com.example.avochadbackend.utility.enums.Role;
+import com.example.avochadbackend.utility.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

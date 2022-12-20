@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.avochadbackend.models.User;
-import com.example.avochadbackend.utility.exception.enums.Role;
+import com.example.avochadbackend.utility.enums.Role;
 
 public class MyUserDetails implements UserDetails{
 

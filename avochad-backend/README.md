@@ -65,8 +65,10 @@ This controller is used to manage the channels.
 `Delete /id` This endpoint is used to delete a channel by id. \
 
 ## Message Controller
-
+This controller is used to manage the messages.
 ### Endpoints
+`comming soon ...`
+
 
 # Frameworks and Libraries
 - [Spring Boot](https://spring.io/projects/spring-boot)

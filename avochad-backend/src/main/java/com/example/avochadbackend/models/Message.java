@@ -1,7 +1,8 @@
 package com.example.avochadbackend.models;
 
-import com.example.avochadbackend.utility.exception.enums.MessageType;
+import com.example.avochadbackend.utility.enums.MessageType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -28,14 +29,6 @@ public class Message {
     @NotEmpty(message = "Text is mandatory")
     private String text;
 
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonBackReference
@@ -43,13 +36,21 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
-    @JsonBackReference
+    @JsonIgnore
     private Chat chat;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
-    @JsonBackReference
+    @JsonIgnore
     private File file;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
     public Message() {}
 

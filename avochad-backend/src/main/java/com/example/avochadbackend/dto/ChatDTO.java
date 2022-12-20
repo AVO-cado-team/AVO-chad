@@ -3,7 +3,7 @@ package com.example.avochadbackend.dto;
 import java.util.List;
 
 import com.example.avochadbackend.models.User;
-import com.example.avochadbackend.utility.exception.enums.ChatType;
+import com.example.avochadbackend.utility.enums.ChatType;
 
 public class ChatDTO {
 

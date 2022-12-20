@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.avochadbackend.models.User;
 import com.example.avochadbackend.repo.UserRepository;
-import com.example.avochadbackend.utility.exception.enums.Role;
-import com.example.avochadbackend.utility.exception.enums.Status;
+import com.example.avochadbackend.utility.enums.Role;
+import com.example.avochadbackend.utility.enums.Status;
 
 @Service
 public class RegistrationService {

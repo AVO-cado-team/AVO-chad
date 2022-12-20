@@ -1,0 +1,51 @@
+version: "3"
+services: 
+    db:
+      image: postgres:10.13
+      container_name: database
+      restart: always
+      environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+          POSTGRES_HOST: postgres
+          POSTGRES_DB: avochad
+      ports:
+          - "5432:5432"
+      networks:
+          avonet:
+              ipv4_address: 10.0.20.102
+
+    backend:
+      command: ["./wait-for-it.sh", "10.0.20.102:5432", "--", "mvn", "spring-boot:run"]
+      build: ./avochad-backend
+      container_name: backend
+      ports:
+        - "9090:9090"
+      links:
+        - db
+      depends_on:
+        - db
+      networks:
+          avonet:
+              ipv4_address: 10.0.20.103
+    
+    # frontend:
+    #     build: ./avochad-frontend
+    #     container_name: frontend
+    #     ports:
+    #         - "8080:8080"
+    #     networks:
+    #         avonet:
+    #             ipv4_address: 10.0.20.104
+
+
+volumes:
+    myshare:
+        driver: local
+
+networks:
+    avonet:
+        ipam:
+            driver: default
+            config:
+                - subnet: 10.0.20.0/24

@@ -2,13 +2,18 @@
 <template>
   <!-- card in center -->
   <q-page-container class="flex flex-center">
+    <!-- Notify  -->
+    <q-notification
+      v-model="notify"
+      position="top"
+      color="negative"
+      message="Invalid email or password"
+    />
+
     <q-card class="q-pa-md">
       <q-card-section>
         <div class="text-h5">Login</div>
       </q-card-section>
-
-      <!-- notification -->
-      <p v-if="notify" class="text-negative">Invalid email or password</p>
 
       <!-- form -->
       <q-form @submit="onSubmit" @reset="onReset" class="q-pa-md">
@@ -56,7 +61,6 @@ export default defineComponent({
       if (Validator.validateLogin(this.email, this.password)) {
         this.$router.push("/home");
       } else {
-        console.log("Invalid email or password");
         this.notify = true;
       }
     },

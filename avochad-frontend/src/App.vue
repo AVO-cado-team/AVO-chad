@@ -3,14 +3,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useQuasar } from 'quasar'
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'App',
-  setup () {
-    const $q = useQuasar()
-    $q.dark.set(true)
-  }
+  name: 'App'
 })
 </script>

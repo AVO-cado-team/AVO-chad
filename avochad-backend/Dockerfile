@@ -1,4 +1,13 @@
-FROM openjdk:8-jdk-alpine
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/target/avochad-backend-0.0.1-SNAPSHOT-exec.jar"]
+FROM maven:3.8.6-jdk-11 as maven
+
+WORKDIR /usr/src/app
+COPY ./src /usr/src/app/src
+COPY ./pom.xml /usr/src/app/pom.xml
+COPY ./wait-for-it.sh /usr/src/app/wait-for-it.sh
+RUN ["ls", "-l", "/usr/src/app/"]
+# compile with maven
+RUN mvn compile
+# Install tree
+RUN apt-get update && apt-get install -y tree
+
+RUN ["tree", "/usr/src/app/"]

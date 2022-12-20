@@ -54,7 +54,7 @@ export default defineComponent({
   methods: {
     onSubmit() {
       if (Validator.validateLogin(this.email, this.password)) {
-        this.$router.push("/home");
+        this.$router.push("/");
       } else {
         console.log("Invalid email or password");
         this.notify = true;

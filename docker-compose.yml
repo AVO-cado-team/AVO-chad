@@ -15,19 +15,19 @@ services:
           avonet:
               ipv4_address: 10.0.20.102
 
-    backend:
-      command: ["./wait-for-it.sh", "10.0.20.102:5432", "--", "mvn", "spring-boot:run"]
-      build: ./avochad-backend
-      container_name: backend
-      ports:
-        - "9090:9090"
-      links:
-        - db
-      depends_on:
-        - db
-      networks:
-          avonet:
-              ipv4_address: 10.0.20.103
+    # backend:
+    #   command: ["./wait-for-it.sh", "10.0.20.102:5432", "--", "mvn", "spring-boot:run"]
+    #   build: ./avochad-backend
+    #   container_name: backend
+    #   ports:
+    #     - "9090:9090"
+    #   links:
+    #     - db
+    #   depends_on:
+    #     - db
+    #   networks:
+    #       avonet:
+    #           ipv4_address: 10.0.20.103
     
     # frontend:
     #     build: ./avochad-frontend

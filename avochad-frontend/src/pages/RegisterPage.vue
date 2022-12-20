@@ -1,4 +1,4 @@
-<!-- LOGIN PAGE -->
+<!-- REG PAGE -->
 <template>
   <!-- card in center -->
   <q-page-container class="flex flex-center">
@@ -12,7 +12,7 @@
 
     <q-card class="q-pa-md">
       <q-card-section>
-        <div class="text-h5">Login</div>
+        <div class="text-h5">Register</div>
       </q-card-section>
 
       <!-- form -->
@@ -33,11 +33,18 @@
           lazy-rules
           :rules="[val => val.length > 0 || 'Please type something']"
         />
+        <q-input
+          v-model="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          filled
+          lazy-rules
+          :rules="[val => val.length > 0 || 'Please type something']"
+        />
         <div class="row justify-end">
           <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
           <q-btn label="Submit" type="submit" color="primary" />
         </div>
-      </q-form>
     </q-card>
   </q-page-container>
 

@@ -7,6 +7,7 @@ class MessageResponse(BaseModel):
     chat: int
     user: UserResponse
     date: str
+    reply_to: 'MessageResponse' = None
 
     class Config:
         orm_mode = True

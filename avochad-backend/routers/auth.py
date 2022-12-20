@@ -22,11 +22,11 @@ auth_router = FastAPI(
 
 @auth_router.post("/register")
 async def register(
-    first_name: str = Query(..., min_length=2, max_length=50),
-    last_name: str = Query(..., min_length=2, max_length=50),
-    username: str = Query(..., min_length=2, max_length=50),
+    first_name: str = Query(..., min_length=2, max_length=50, regex=r"^[a-zA-Z]+$"),
+    last_name: str = Query(..., min_length=2, max_length=50, regex=r"^[a-zA-Z]+$"),
+    username: str = Query(..., min_length=2, max_length=50, regex=r"^[a-zA-Z0-9_.]+$"),
     email: str = Query(..., min_length=2, max_length=50, regex=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"),
-    password: str = Query(..., min_length=2, max_length=50),
+    password: str = Query(..., min_length=2, max_length=50, regex=r"^[a-zA-Z0-9_.]+$"),
 ) -> RegisterResponse | RegisterUnsuccessful:
     user: User | None = await User.get_or_none(
         queryset.Q(username=username) | queryset.Q(email=email)

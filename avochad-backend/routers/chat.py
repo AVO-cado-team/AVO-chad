@@ -42,10 +42,15 @@ async def convert_chat_to_chat_response(chat: Chat) -> ChatResponse:
         MessageResponse(
             id=message.id,
             text=message.text,
-            chat=message.chat,
-            user=message.user,
+            chat=(await message.chat).id,
+            user=UserResponse(
+                id=(await message.user).id,
+                username=(await message.user).username,
+                email=(await message.user).email,
+            ),
+            reply_to=await convert_message_to_message_response(await message.reply_to) if message.reply_to else None,
             date=message.date.strftime("%Y-%m-%d %H:%M:%S"),
-        ) for message in await chat.messages.limit(10).all()
+        ) for message in await chat.messages.limit(10)
     ]
 
     return ChatResponse(
@@ -71,8 +76,9 @@ async def convert_message_to_message_response(message: Message) -> MessageRespon
     return MessageResponse(
         id=message.id,
         text=message.text,
-        chat=message.chat,
+        chat=(await message.chat).id,
         user=user,
+        reply_to=await convert_message_to_message_response(await message.reply_to) if message.reply_to else None,
         date=message.date.strftime("%Y-%m-%d %H:%M:%S"),
     )
 
@@ -138,7 +144,7 @@ async def get_invite_code(
         raise HTTPException(status_code=404, detail="Chat not found")
     if not await chat.users.filter(id=user.id).exists():
         raise HTTPException(status_code=403, detail="You are not in this chat")
-    if not chat.admin.id == user.id:
+    if not (await chat.admin).id == user.id:
         raise HTTPException(status_code=403, detail="You are not admin of this chat")
     
     return create_invite_token(chat.id)
@@ -187,7 +193,7 @@ async def leave_chat(
         raise HTTPException(status_code=404, detail="Chat not found")
     if not await chat.users.filter(id=user.id).exists():
         raise HTTPException(status_code=403, detail="You are not in this chat")
-    if chat.admin.id == user.id:
+    if (await chat.admin).id == user.id:
         raise HTTPException(status_code=403, detail="You are admin of this chat")
 
     await chat.users.remove(user)
@@ -218,6 +224,7 @@ async def send_message(
     user: User = Depends(get_current_user),
     chat_name: str = Query(..., min_length=2, max_length=50),
     message: str = Query(..., min_length=1, max_length=500),
+    reply_to: int = Query(None, ge=0),
     ) -> MessageResponse:
 
     chat = await Chat.filter(chat_name=chat_name).first()
@@ -225,11 +232,22 @@ async def send_message(
         raise HTTPException(status_code=404, detail="Chat not found")
     if not await chat.users.filter(id=user.id).exists():
         raise HTTPException(status_code=403, detail="You are not in this chat")
+    
+    if reply_to:
+        reply_to_message = await Message.filter(id=reply_to).first()
+        if reply_to_message == None:
+            raise HTTPException(status_code=404, detail="Message not found")
+        if (await reply_to_message.chat).id != chat.id:
+            raise HTTPException(status_code=403, detail="Message not in this chat")
 
-    await Message.create(
+    print(chat.messages)
+    msg = await Message.create(
+        text=message,
+        reply_to=reply_to_message if reply_to else None,
         chat=chat,
         user=user,
-        message=message,
     )
+    await msg.save()
+    await chat.messages.add(msg)
 
-    return await convert_message_to_message_response(message)
+    return await convert_message_to_message_response(msg)

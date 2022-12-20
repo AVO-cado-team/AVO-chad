@@ -25,7 +25,6 @@ app.include_router(chat_router.router, tags=["Chat"], prefix="/chat")
 # TODO: https://fastapi.tiangolo.com/advanced/websockets/
 
 
-
 @app.on_event("startup")
 async def startup():
     await Tortoise.init(

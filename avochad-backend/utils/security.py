@@ -25,7 +25,7 @@ def create_jwt_token(user: User) -> str:
         {
             "id": user.id,
             "email": user.email,
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=1),
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=50),
         },
         settings.SECRET_KEY,
         algorithm="HS256",
@@ -38,3 +38,8 @@ def decode_jwt_token(token: str) -> TokenPayload | None:
         return TokenPayload(**payload)
     except jwt.PyJWTError:
         return None
+    
+def is_authenticated(payload: TokenPayload | None) -> bool:
+    if payload == None:
+        return False
+    return payload.exp > datetime.datetime.utcnow()

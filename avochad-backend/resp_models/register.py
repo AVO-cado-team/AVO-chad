@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field
+from fastapi import Response
 
 class RegisterResponse(BaseModel):
     jwt: str = Field(..., title="JWT token", description="JWT token")
 
 
-class RegisterUnsuccessful(BaseModel):
-    status_code: int = Field(401, title="Status code", description="Status code")
-    detail: str = Field("Register unsuccessful", title="Detail", description="Detail")
-    headers: dict[str, str] = Field({"WWW-Authenticate": "Bearer"}, title="Headers", description="Headers")
+class RegisterUnsuccessful(Response):
+    status_code: int = 401
+    detail: str = "Register unsuccessful"
+    headers: dict[str, str] = {"WWW-Authenticate": "Bearer"}

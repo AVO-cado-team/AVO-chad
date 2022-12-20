@@ -48,8 +48,8 @@ async def register(
 
 @auth_router.get("/login")
 async def login(
-    username: str,
-    password: str,
+    username: str = Query(..., min_length=2, max_length=50),
+    password: str = Query(..., min_length=2, max_length=50),
 ) -> LoginResponse | LoginUnsuccessful:
     user: User | None = await User.get_or_none(queryset.Q(username=username))
     if user == None:
